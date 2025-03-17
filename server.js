@@ -30,27 +30,28 @@ const User = mongoose.model("User", UserSchema);
 app.post("/api/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("🔹 Login Request Received:", email, password);
+    console.log("🔹 Login Attempt:", email, password); // Log incoming request
 
     if (!email || !password) {
-      console.log("❌ Missing Fields");
       return res.status(400).json({ error: "All fields are required" });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      console.log("❌ User Not Found:", email);
+      console.log("❌ User not found in DB");
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    console.log("✅ User Found:", user.email);
-    console.log("🔹 Stored Hashed Password:", user.password);
+    console.log(
+      "✅ User Found:",
+      user.email,
+      "Hashed Password:",
+      user.password
+    );
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("🔹 Password Match:", isMatch);
-
     if (!isMatch) {
-      console.log("❌ Password didn't match");
+      console.log("❌ Password does not match");
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
@@ -58,10 +59,10 @@ app.post("/api/auth/login", async (req, res) => {
       expiresIn: "1h",
     });
 
-    console.log("✅ Login Successful:", user.email);
+    console.log("✅ Login successful for:", user.email);
     res.json({ message: "Login successful", token, user });
   } catch (error) {
-    console.log("❌ Error Logging in:", error);
+    console.error("❌ Error logging in:", error);
     res.status(500).json({ error: "Error logging in" });
   }
 });
