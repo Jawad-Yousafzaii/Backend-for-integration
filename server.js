@@ -4,7 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+require("dotenv").config();
 dotenv.config();
 
 const app = express();
