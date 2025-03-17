@@ -4,21 +4,19 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// MongoDB Connection
+require("dotenv").config();
+const mongoose = require("mongoose");
+
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+  .connect(process.env.MONGO_URI) // ✅ Directly connect without deprecated options
+  .then(() => console.log("✅ MongoDB Connected Successfully"))
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
 // User Model
 const UserSchema = new mongoose.Schema({
