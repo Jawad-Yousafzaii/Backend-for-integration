@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(cors());
 
 require("dotenv").config();
-const mongoose = require("mongoose");
 
 mongoose
   .connect(process.env.MONGO_URI) // ✅ Directly connect without deprecated options
